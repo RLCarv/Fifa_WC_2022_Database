@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Lista de Grupos</h1>
+<table>
+  <tr>
+    <th>
+      <b>Nome do Grupo</b>
+    </th>
+    <th>
+      <b>Equipa 1</b>
+    </th>
+    <th>
+      <b>Equipa 2</b>
+    </th>
+    <th>
+      <b>Equipa 3</b>
+    </th>
+    <th>
+      <b>Equipa 4</b>
+    </th>
+  </tr>
+
+  {% for grupo in grupos_list %}
+  <tr>
+    <td>{{ grupo.nome_grupo }}</td>
+    <td>{{ grupo.equipa_1 }}</td>
+    <td>{{ grupo.equipa_2 }}</td>
+    <td>{{ grupo.equipa_3 }}</td>
+    <td>{{ grupo.equipa_4 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h1>Jogos por Grupos</h1>
+<table>
+  <tr>
+    <th>
+      <b>Nome do Grupo</b>
+    </th>
+    <th>
+      <b>Nº da Partida</b>
+    </th>
+    <th>
+      <b>Equipa 1</b>
+    </th>
+    <th>
+      <b>Equipa 2</b>
+    </th>
+    <th>
+      <b>Dia</b>
+    </th>
+    <th>
+      <b>Hora</b>
+    </th>
+    <th>
+      <b>Estádio</b>
+    </th>
+    <th>
+      <b>Attendance</b>
+    </th>
+    <th>
+      <b>Resultado</b>
+    </th>
+  </tr>
+
+  {% for grupo in grupos %}
+  <tr>
+    <td>{{ grupo.nome_grupo }}</td>
+    <td>{{ grupo.match_no }}</td>
+    <td>{{ grupo.equipa_1 }}</td>
+    <td>{{ grupo.equipa_2 }}</td>
+    <td>{{ grupo.dia }}</td>
+    <td>{{ grupo.hora }}</td>
+    <td>{{ grupo.nome_estadio }}</td>
+    <td>{{ grupo.attendance }}</td>
+    <td>{{ grupo.resultado }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Estádios</h1>
+<table>
+  <tr>
+    <th>
+      <b>Nome do Estádio</b>
+    </th>
+    <th>
+      <b>Lotação Máxima</b>
+    </th>
+  </tr>
+
+  {% for estadio in estadios %}
+  <tr>
+    <td>
+      <a href="/estadios/{{ estadio.nome_estadio }}"
+        >{{ estadio.nome_estadio }}</a
+      >
+    </td>
+    <td>{{ estadio.lotacao_max }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

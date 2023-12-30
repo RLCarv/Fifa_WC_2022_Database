@@ -1,0 +1,66 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Fifa World Cup 2022 database</h1>
+
+<h2>Sobre</h2>
+<p>
+  Descricao do site com alguns links relevantes sobre as fontes, nossos nomes
+  <a href="https://docs.python.org/3/library/sqlite3.html">sqlite3</a>,
+  <a href="https://flask.palletsprojects.com">Flask</a>, and
+  <a href="https://jinja.palletsprojects.com">Jinja</a>.
+</p>
+
+<h2>Algumas estatísticas sobre a base de dados</h2>
+<table>
+  <tr>
+    <th>Items</th>
+    <th>Count</th>
+  </tr>
+  <tr>
+    <td>Equipas</td>
+    <td>{{ stats.n_equipas }}</td>
+  </tr>
+  <tr>
+    <td>Estádios</td>
+    <td>{{ stats.n_estadios }}</td>
+  </tr>
+  <tr>
+    <td>Grupos e Jogos</td>
+    <td>{{ stats.n_grupos }}</td>
+  </tr>
+  <tr>
+    <td>Jogadores</td>
+    <td>{{ stats.n_jogadores }}</td>
+  </tr>
+  <tr>
+    <td>Canais</td>
+    <td>{{ stats.n_canais }}</td>
+  </tr>
+</table>
+
+<h2>Listagem de dados</h2>
+
+<h3>Estádios</h3>
+<p>
+  <a href="/estadios">List all</a>
+</p>
+
+<h3>Jogos e Grupos</h3>
+<p>
+  <a href="/grupos">List all</a>
+</p>
+
+<h3>Equipas</h3>
+<p>
+  <a href="/equipas">List all</a>
+</p>
+
+<h3>Jogadores</h3>
+<p>
+  <a href="/jogadores">List all</a>
+</p>
+
+<h3>Canais</h3>
+<p>
+  <a href="/canais">List all</a>
+</p>
+{% endblock %}

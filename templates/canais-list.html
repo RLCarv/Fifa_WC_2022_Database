@@ -1,0 +1,24 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Canais</h1>
+<table>
+  <tr>
+    <th>
+      <b>Nome do Canal</b>
+    </th>
+    <th>
+      <b>País em que é Assistido</b>
+    </th>
+    <th>
+      <b>Tipo de Serviço</b>
+    </th>
+  </tr>
+
+  {% for canal in canais %}
+  <tr>
+    <td>{{ canal.nome_canal }}</td>
+    <td>{{ canal.nome_pais }}</td>
+    <td>{{ canal.tipo_servico }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

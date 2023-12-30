@@ -1,0 +1,22 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Equipas</h1>
+<table>
+  <tr>
+    <th>
+      <b>Nome da Equipa</b>
+    </th>
+    <th>
+      <b>Mundiais Ganhos</b>
+    </th>
+  </tr>
+
+  {% for equipa in equipas %}
+  <tr>
+    <td>
+      <a href="/equipas/{{ equipa.nome_pais }}">{{ equipa.nome_pais }}</a>
+    </td>
+    <td>{{ equipa.mundiais_ganhos }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

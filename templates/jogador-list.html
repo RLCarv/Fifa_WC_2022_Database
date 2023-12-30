@@ -1,0 +1,42 @@
+{% extends 'base.html' %} {% block content %}
+<h1>Lista de Jogadores</h1>
+<table>
+  <tr>
+    <th>
+      <b>JogadorID</b>
+    </th>
+    <th>
+      <b>Nome do Jogador</b>
+    </th>
+    <th>
+      <b>Posição</b>
+    </th>
+    <th>
+      <b>País</b>
+    </th>
+    <th>
+      <b>Clube</b>
+    </th>
+    <th>
+      <b>Partidas Jogadas</b>
+    </th>
+    <th>
+      <b>Nº de Gols</b>
+    </th>
+  </tr>
+
+  {% for jogador in jogadores %}
+  <tr>
+    <td>
+      <a href="/jogadores/{{ jogador.jogador_id }}">{{ jogador.jogador_id }}</a>
+    </td>
+    <td>{{ jogador.nome_jogador }}</td>
+    <td>{{ jogador.posicao }}</td>
+    <td>{{ jogador.nome_pais }}</td>
+    <td>{{ jogador.clube }}</td>
+    <td>{{ jogador.partidas_jogadas }}</td>
+    <td>{{ jogador.gols }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
