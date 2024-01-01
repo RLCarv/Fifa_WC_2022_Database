@@ -16,7 +16,7 @@
   {% for canal in canais %}
   <tr>
     <td>{{ canal.nome_canal }}</td>
-    <td>{{ canal.nome_pais }}</td>
+    <td><a href="/equipas/{{ canal.nome_pais }}">{{ canal.nome_pais }}</a></td>
     <td>{{ canal.tipo_servico }}</td>
   </tr>
   {% endfor %}

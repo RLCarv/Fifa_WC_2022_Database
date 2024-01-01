@@ -21,21 +21,28 @@
 
   {% for grupo in grupos_list %}
   <tr>
-    <td>{{ grupo.nome_grupo }}</td>
-    <td>{{ grupo.equipa_1 }}</td>
-    <td>{{ grupo.equipa_2 }}</td>
-    <td>{{ grupo.equipa_3 }}</td>
-    <td>{{ grupo.equipa_4 }}</td>
+    <td>
+      <a href="/grupos/{{ grupo.nome_grupo }}">{{ grupo.nome_grupo }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.pais_1 }}">{{ grupo.pais_1 }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.pais_2 }}">{{ grupo.pais_2 }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.pais_3 }}">{{ grupo.pais_3 }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.pais_4 }}">{{ grupo.pais_4 }}</a>
+    </td>
   </tr>
   {% endfor %}
 </table>
 
-<h1>Jogos por Grupos</h1>
+<h1>Lista de Jogos</h1>
 <table>
   <tr>
-    <th>
-      <b>Nome do Grupo</b>
-    </th>
     <th>
       <b>Nº da Partida</b>
     </th>
@@ -46,6 +53,9 @@
       <b>Equipa 2</b>
     </th>
     <th>
+      <b>Nome do Grupo</b>
+    </th>
+    <th>
       <b>Dia</b>
     </th>
     <th>
@@ -54,25 +64,27 @@
     <th>
       <b>Estádio</b>
     </th>
-    <th>
-      <b>Attendance</b>
-    </th>
-    <th>
-      <b>Resultado</b>
-    </th>
   </tr>
 
   {% for grupo in grupos %}
   <tr>
-    <td>{{ grupo.nome_grupo }}</td>
-    <td>{{ grupo.match_no }}</td>
-    <td>{{ grupo.equipa_1 }}</td>
-    <td>{{ grupo.equipa_2 }}</td>
+    <td>
+      <a href="/grupos/{{ grupo.match_no }}">{{ grupo.match_no }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.nome_pais_1 }}">{{ grupo.nome_pais_1 }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ grupo.nome_pais_2 }}">{{ grupo.nome_pais_2 }}</a>
+    </td>
+    <td>
+      <a href="/grupos/{{ grupo.nome_grupo }}">{{ grupo.nome_grupo }}</a>
+    </td>
     <td>{{ grupo.dia }}</td>
     <td>{{ grupo.hora }}</td>
-    <td>{{ grupo.nome_estadio }}</td>
-    <td>{{ grupo.attendance }}</td>
-    <td>{{ grupo.resultado }}</td>
+    <td>
+      <a href="/estadios/{{ grupo.nome_estadio }}">{{ grupo.nome_estadio }}</a>
+    </td>
   </tr>
   {% endfor %}
 </table>

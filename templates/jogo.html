@@ -1,0 +1,45 @@
+{% extends 'base.html' %} {% block content %}
+<h1>
+  Partida {{ jogo.match_no }}:
+  <a href="/equipas/{{ jogo.nome_pais_1 }}">{{ jogo.nome_pais_1 }}</a> x
+  <a href="/equipas/{{ jogo.nome_pais_2 }}">{{ jogo.nome_pais_2 }}</a>
+</h1>
+
+<table>
+  <tr>
+    <th>
+      <b>Grupo</b>
+    </th>
+    <th>
+      <b>Dia</b>
+    </th>
+    <th>
+      <b>Hora</b>
+    </th>
+    <th>
+      <b>Estádio</b>
+    </th>
+    <th>
+      <b>Attendance</b>
+    </th>
+    <th>
+      <b>Gols {{ jogo.nome_pais_1 }}</b>
+    </th>
+    <th>
+      <b>Gols {{ jogo.nome_pais_2 }}</b>
+    </th>
+  </tr>
+
+  <tr>
+    <td>
+      <a href="/grupos/{{ jogo.nome_grupo }}">{{ jogo.nome_grupo }}</a>
+    </td>
+    <td>{{ jogo.dia }}</td>
+    <td>{{ jogo.hora }}</td>
+    <td>{{ jogo.nome_estadio }}</td>
+    <td>{{ jogo.attendance }}</td>
+    <td>{{ jogo.resultado_pais_1 }}</td>
+    <td>{{ jogo.resultado_pais_2 }}</td>
+  </tr>
+</table>
+{% endblock %}

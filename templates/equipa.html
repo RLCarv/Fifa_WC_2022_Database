@@ -1,5 +1,103 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Ficha da Equipa</h1>
-<p><b>Nome do Equipa: </b>{{ equipa.nome_pais }}</p>
+<h1>{{ equipa.nome_pais }}</h1>
+<p>
+  <b>Grupo: </b>
+  <a href="/grupos/{{ equipa.nome_grupo }}">{{ equipa.nome_grupo }}</a>
+</p>
 <p><b>Mundiais Ganhos: </b>{{ equipa.mundiais_ganhos }}</p>
+
+<h2>Jogos:</h2>
+<table>
+  <tr>
+    <th>
+      <b>Nº da Partida</b>
+    </th>
+    <th>
+      <b>Equipa 1</b>
+    </th>
+    <th>
+      <b>Equipa 2</b>
+    </th>
+    <th>
+      <b>Dia</b>
+    </th>
+    <th>
+      <b>Hora</b>
+    </th>
+    <th>
+      <b>Estádio</b>
+    </th>
+    <th>
+      <b>Attendance</b>
+    </th>
+    <th>
+      <b>Gols Equipa 1</b>
+    </th>
+    <th>
+      <b>Gols Equipa 2</b>
+    </th>
+  </tr>
+  {% for jogo in eq_jogos %}
+  <tr>
+    <td>
+      <a href="/grupos/{{ jogo.match_no }}">{{ jogo.match_no }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ jogo.nome_pais_1 }}">{{ jogo.nome_pais_1 }}</a>
+    </td>
+    <td>
+      <a href="/equipas/{{ jogo.nome_pais_2 }}">{{ jogo.nome_pais_2 }}</a>
+    </td>
+    <td>{{ jogo.dia }}</td>
+    <td>{{ jogo.hora }}</td>
+    <td>
+      <a href="/estadios/{{ jogo.nome_estadio }}">{{ jogo.nome_estadio }}</a>
+    </td>
+    <td>{{ jogo.attendance }}</td>
+    <td>{{ jogo.resultado_pais_1 }}</td>
+    <td>{{ jogo.resultado_pais_2 }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h2>Jogadores:</h2>
+<table>
+  <tr>
+    <th>
+      <b>JogadorID</b>
+    </th>
+    <th>
+      <b>Nome do Jogador</b>
+    </th>
+    <th>
+      <b>Posição</b>
+    </th>
+    <th>
+      <b>Clube</b>
+    </th>
+    <th>
+      <b>Partidas Jogadas</b>
+    </th>
+    <th>
+      <b>Nº de Gols</b>
+    </th>
+  </tr>
+
+  {% for jogador in eq_jogador %}
+  <tr>
+    <td>
+      <a href="/jogadores/{{ jogador.jogador_id }}">{{ jogador.jogador_id }}</a>
+    </td>
+    <td>
+      <a href="/jogadores/{{ jogador.jogador_id }}"
+        >{{ jogador.nome_jogador }}</a
+      >
+    </td>
+    <td>{{ jogador.posicao }}</td>
+    <td>{{ jogador.clube }}</td>
+    <td>{{ jogador.partidas_jogadas }}</td>
+    <td>{{ jogador.gols }}</td>
+  </tr>
+  {% endfor %}
+</table>
 {% endblock %}

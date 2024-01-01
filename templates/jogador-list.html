@@ -30,9 +30,15 @@
     <td>
       <a href="/jogadores/{{ jogador.jogador_id }}">{{ jogador.jogador_id }}</a>
     </td>
-    <td>{{ jogador.nome_jogador }}</td>
+    <td>
+      <a href="/jogadores/{{ jogador.jogador_id }}"
+        >{{ jogador.nome_jogador }}</a
+      >
+    </td>
     <td>{{ jogador.posicao }}</td>
-    <td>{{ jogador.nome_pais }}</td>
+    <td>
+      <a href="/equipas/{{ jogador.nome_pais }}">{{ jogador.nome_pais }}</a>
+    </td>
     <td>{{ jogador.clube }}</td>
     <td>{{ jogador.partidas_jogadas }}</td>
     <td>{{ jogador.gols }}</td>

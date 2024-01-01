@@ -1,9 +1,11 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Ficha do Jogador</h1>
-<p><b>Nome do Jogador: </b>{{ jogador.nome_jogador }}</p>
+<h1>{{ jogador.nome_jogador }}</h1>
 <p><b>JogadorID: </b>{{ jogador.jogador_id}}</p>
+<p>
+  <b>País: </b
+  ><a href="/equipas/{{ jogador.nome_pais }}">{{ jogador.nome_pais }}</a>
+</p>
 <p><b>Posição: </b>{{ jogador.posicao }}</p>
-<p><b>País: </b>{{ jogador.nome_pais }}</p>
 <p><b>Clube: </b>{{ jogador.clube }}</p>
 <p><b>Partidas Jogadas: </b>{{ jogador.partidas_jogadas }}</p>
 <p><b>Nº de Gols: </b>{{ jogador.gols }}</p>

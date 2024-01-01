@@ -1,9 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-<h1>{{ estadio.nome_estadio }}</h1>
-<p><b>Lotação Máxima: </b>{{ estadio.lotacao_max }}</p>
-<p><b>Total Torcedores: </b>{{ attendance.sum }}</p>
 
-<h2>Jogos:</h2>
+<h1>{{ gp_name.nome_grupo }}</h1>
+
 <table>
   <tr>
     <th>
@@ -22,14 +20,13 @@
       <b>Hora</b>
     </th>
     <th>
-      <b>Attendance</b>
+      <b>Estádio</b>
     </th>
   </tr>
-  {% for jogo in es_jogos %}
+
+  {% for jogo in gp %}
   <tr>
-    <td>
-      <a href="/grupos/{{ jogo.match_no }}">{{ jogo.match_no }}</a>
-    </td>
+    <td><a href="/grupos/{{ jogo.match_no }}">{{ jogo.match_no }}</a></td>
     <td>
       <a href="/equipas/{{ jogo.nome_pais_1 }}">{{ jogo.nome_pais_1 }}</a>
     </td>
@@ -38,7 +35,9 @@
     </td>
     <td>{{ jogo.dia }}</td>
     <td>{{ jogo.hora }}</td>
-    <td>{{ jogo.attendance }}</td>
+    <td>
+      <a href="/estadios/{{ jogo.nome_estadio }}">{{ jogo.nome_estadio }}</a>
+    </td>
   </tr>
   {% endfor %}
 </table>

@@ -11,21 +11,44 @@ APP = Flask(__name__)
 def index():
     stats = {}
     stats = db.execute('''
-    SELECT * FROM
-      (SELECT COUNT(*) n_equipas FROM Equipa)
-    JOIN
-      (SELECT COUNT(*) n_estadios FROM Estadios)
-    JOIN
-      (SELECT COUNT(*) n_grupos FROM Grupo)
-    JOIN 
-      (SELECT COUNT(*) n_jogadores FROM Jogador)
-    JOIN 
-      (SELECT COUNT(*) n_jogos FROM Jogo)
-    JOIN 
-      (SELECT COUNT(*) n_canais FROM Canal)
+    SELECT *
+  FROM (
+           SELECT COUNT( * ) n_equipas
+             FROM Equipa
+       )
+       JOIN
+       (
+           SELECT COUNT( * ) n_estadios
+             FROM Estadios
+       )
+       JOIN
+       (
+           SELECT COUNT( * ) n_jogadores
+             FROM Jogador
+       )
+       JOIN
+       (
+           SELECT COUNT( * ) n_jogos
+             FROM Jogo
+       )
+       JOIN
+       (
+           SELECT sum(resultado_pais_1 + resultado_pais_2) n_gols
+             FROM jogo
+       )
+       JOIN
+       (
+           SELECT sum(attendance) n_bilhetes
+             FROM Jogo
+       )
     ''').fetchone()
     logging.info(stats)
     return render_template('index.html',stats=stats)
+
+# Fontes
+@APP.route('/fontes/')
+def get_fontes():
+  return render_template('fontes.html')
 
 # Lista de Estadios
 @APP.route('/estadios/')
@@ -50,8 +73,22 @@ def get_estadio(expr):
 
   if estadio is None:
      abort(404, 'Nome do estádio {} não existe.'.format(expr))
+     
+  es_jogos = db.execute(
+      '''
+      SELECT *
+      FROM Jogo
+      WHERE nome_estadio = ?;
+      ''', [expr]).fetchall()
+  
+  attendance = db.execute(
+      '''
+      SELECT sum(attendance) AS sum
+      FROM Jogo
+      WHERE nome_estadio = ?;
+      ''', [expr]).fetchone()
 
-  return render_template('estadio.html', estadio=estadio)
+  return render_template('estadio.html', estadio=estadio, es_jogos=es_jogos, attendance=attendance)
 
 # Lista de Canais
 @APP.route('/canais/')
@@ -113,35 +150,103 @@ def get_equipa(expr):
 
   if equipa is None:
      abort(404, 'Nome da equipa {} não existe.'.format(expr))
+     
+  eq_jogos = db.execute(
+      '''
+      select *
+      from Jogo
+      where nome_pais_1 = ? or nome_pais_2 = ?
+      ''', [expr,expr]).fetchall()
+  
+  eq_jogador = db.execute(
+      '''
+      select *
+      from Jogador
+      where nome_pais = ?
+      ''', [expr]).fetchall()
 
-  return render_template('equipa.html', equipa=equipa)
+  return render_template('equipa.html', equipa=equipa, eq_jogos=eq_jogos, eq_jogador=eq_jogador)
 
 # Lista de Grupos e Jogos
 @APP.route('/grupos/')
 def list_grupos():
-  grupos = db.execute(
-      '''
-      SELECT *
-      FROM Jogo j
-       JOIN
-       (
-           SELECT g.nome_grupo,
-                  e.nome_pais
-             FROM Grupo g
-                  JOIN
-                  Equipa e ON g.equipa_1 = e.nome_pais OR 
-                              g.equipa_2 = e.nome_pais OR 
-                              g.equipa_3 = e.nome_pais OR 
-                              g.equipa_4 = e.nome_pais
-       )
-       ON j.equipa_1 = nome_pais
-      ORDER BY nome_grupo,
-          match_no;
-      ''').fetchall()
-  
   grupos_list = db.execute(
       '''
-      SELECT *
-      FROM Grupo
+      SELECT e1.nome_grupo,
+       e1.nome_pais as pais_1,
+       e2.nome_pais as pais_2,
+       e3.nome_pais as pais_3,
+       e4.nome_pais as pais_4
+  FROM Equipa e1
+       JOIN
+       Equipa e2 ON e1.nome_grupo = e2.nome_grupo
+       JOIN
+       Equipa e3 ON e2.nome_grupo = e3.nome_grupo
+       JOIN
+       Equipa e4 ON e3.nome_grupo = e4.nome_grupo
+  WHERE e1.nome_pais != e2.nome_pais AND 
+       e1.nome_pais != e3.nome_pais AND 
+       e1.nome_pais != e4.nome_pais AND 
+       e2.nome_pais != e3.nome_pais AND 
+       e2.nome_pais != e4.nome_pais AND 
+       e3.nome_pais != e4.nome_pais
+  GROUP BY e1.nome_grupo;
       ''').fetchall()
+  
+  grupos = db.execute(
+      '''
+      SELECT e.nome_grupo, 
+       j.*
+      FROM Jogo j
+       JOIN
+       Equipa e ON e.nome_pais = j.nome_pais_1
+      ORDER BY match_no;
+      ''').fetchall() 
   return render_template('grupos-list.html', grupos=grupos, grupos_list=grupos_list)
+
+# Grupo
+@APP.route('/grupos/<expr>/')
+def get_grupo(expr):
+  gp_name = db.execute(
+      '''
+      SELECT e.nome_grupo, 
+       j.*
+      FROM Jogo j
+       JOIN
+       Equipa e ON e.nome_pais = j.nome_pais_1
+      WHERE e.nome_grupo = ?;
+      ''', [expr]).fetchone()
+  
+  gp = db.execute(
+      '''
+      SELECT e.nome_grupo, 
+       j.*
+      FROM Jogo j
+       JOIN
+       Equipa e ON e.nome_pais = j.nome_pais_1
+      WHERE e.nome_grupo = ?;
+      ''', [expr]).fetchall()
+
+  if gp is None:
+     abort(404, 'Nome do grupo {} não existe.'.format(expr))
+
+  return render_template('grupo.html', gp_name=gp_name, gp=gp)
+
+# Jogo
+@APP.route('/grupos/<int:id>/')
+def get_jogo(id):
+  jogo = db.execute(
+      '''
+      SELECT e.nome_grupo,
+       j.*
+      FROM Jogo j
+       JOIN
+       Equipa e ON e.nome_pais = j.nome_pais_1
+      WHERE match_no = ?;
+
+      ''', [id]).fetchone()
+
+  if jogo is None:
+     abort(404, 'O jogo {} não existe.'.format(id))
+
+  return render_template('jogo.html', jogo=jogo)
