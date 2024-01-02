@@ -1,7 +1,7 @@
 {% extends 'base.html' %} {% block content %}
-<h1>Lista de Jogadores</h1>
+<h1>Resultados da sua pesquisa:</h1>
 
-<p>Pesquise pelo nome do Jogador:</p>
+<p>Pesquise novamente pelo nome do Jogador:</p>
 <form
   name="s_jogador"
   action="javascript:window.open('/jogadores/search/'+document.forms['s_jogador'].elements['expr'].value,'_self')"
@@ -35,7 +35,7 @@
     </th>
   </tr>
 
-  {% for jogador in jogadores %}
+  {% for jogador in s_jogador %}
   <tr>
     <td>
       <a href="/jogadores/{{ jogador.jogador_id }}">{{ jogador.jogador_id }}</a>

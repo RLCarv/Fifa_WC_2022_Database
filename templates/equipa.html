@@ -4,6 +4,12 @@
   <b>Grupo: </b>
   <a href="/grupos/{{ equipa.nome_grupo }}">{{ equipa.nome_grupo }}</a>
 </p>
+<p><b>Nº de Pontos no Grupo: </b>{{ eq_n_resultados.n_pontos }}</p>
+<p><b>Vitorias: </b>{{ eq_n_resultados.n_vitorias }}</p>
+<p><b>Derrotas: </b>{{ eq_n_resultados.n_derrotas }}</p>
+<p><b>Empates: </b>{{ eq_n_resultados.n_empates }}</p>
+<p><b>Gols Feitos: </b>{{ eq_gols_feito.TotalGols }}</p>
+<p><b>Gols Sofridos: </b>{{ eq_gols_sofrido.TotalGolsSofridos }}</p>
 <p><b>Mundiais Ganhos: </b>{{ equipa.mundiais_ganhos }}</p>
 
 <h2>Jogos:</h2>
@@ -36,6 +42,9 @@
     <th>
       <b>Gols Equipa 2</b>
     </th>
+    <th>
+      <b>Resultado</b>
+    </th>
   </tr>
   {% for jogo in eq_jogos %}
   <tr>
@@ -56,6 +65,7 @@
     <td>{{ jogo.attendance }}</td>
     <td>{{ jogo.resultado_pais_1 }}</td>
     <td>{{ jogo.resultado_pais_2 }}</td>
+    <td>{{ jogo.resultado }}</td>
   </tr>
   {% endfor %}
 </table>

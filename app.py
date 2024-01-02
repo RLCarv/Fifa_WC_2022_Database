@@ -153,10 +153,48 @@ def get_equipa(expr):
      
   eq_jogos = db.execute(
       '''
-      select *
-      from Jogo
-      where nome_pais_1 = ? or nome_pais_2 = ?
+      SELECT *,
+       (CASE WHEN resultado_pais_1 > resultado_pais_2 THEN nome_pais_1 
+       WHEN resultado_pais_1 < resultado_pais_2 THEN nome_pais_2 
+       ELSE 'EMPATE' END) AS resultado
+      FROM Jogo
+      WHERE nome_pais_1 = ? OR 
+       nome_pais_2 = ?
       ''', [expr,expr]).fetchall()
+  
+  eq_n_resultados = db.execute(
+      '''
+      SELECT n_vitorias,
+       n_derrotas,
+       n_empates,
+       (n_vitorias * 3) + (n_empates) AS n_pontos
+      FROM (
+           SELECT *,
+                  (3 - n_vitorias - n_empates) AS n_derrotas
+             FROM (
+                      SELECT count(resultado) AS n_vitorias
+                        FROM (
+                                 SELECT (CASE WHEN resultado_pais_1 > resultado_pais_2 THEN nome_pais_1 
+                                 WHEN resultado_pais_1 < resultado_pais_2 THEN nome_pais_2 ELSE 'EMPATE' END) AS resultado
+                                   FROM Jogo
+                                  WHERE nome_pais_1 = ? OR 
+                                        nome_pais_2 = ?
+                             )
+                       WHERE resultado = ?
+                  )
+                  JOIN
+                  (
+                      SELECT count(resultado) AS n_empates
+                        FROM (
+                                 SELECT (CASE WHEN resultado_pais_1 > resultado_pais_2 THEN nome_pais_1 
+                                 WHEN resultado_pais_1 < resultado_pais_2 THEN nome_pais_2 ELSE 'EMPATE' END) AS resultado
+                                   FROM Jogo
+                                  WHERE nome_pais_1 = ? OR 
+                                        nome_pais_2 = ?
+                             )
+                       WHERE resultado = 'EMPATE'
+                  )
+       )''', [expr,expr,expr,expr,expr]).fetchone()
   
   eq_jogador = db.execute(
       '''
@@ -164,8 +202,42 @@ def get_equipa(expr):
       from Jogador
       where nome_pais = ?
       ''', [expr]).fetchall()
+  
+  eq_gols_feito = db.execute(
+    '''
+    SELECT sum1 + sum2 as TotalGols
+    FROM (
+           SELECT sum(resultado_pais_1) as sum1
+             FROM Jogo
+            WHERE nome_pais_1 = ?
+       )
+       JOIN
+       (
+           SELECT sum(resultado_pais_2) as sum2
+             FROM Jogo
+            WHERE nome_pais_2 = ?
+       )
+    ''',[expr,expr]).fetchone()
+  
+  eq_gols_sofrido = db.execute(
+    '''
+    SELECT sum1 + sum2 as TotalGolsSofridos
+    FROM (
+           SELECT sum(resultado_pais_2) as sum1
+             FROM Jogo
+            WHERE nome_pais_1 = ?
+       )
+       JOIN
+       (
+           SELECT sum(resultado_pais_1) as sum2
+             FROM Jogo
+            WHERE nome_pais_2 = ?
+       )
+    ''',[expr,expr]).fetchone()
 
-  return render_template('equipa.html', equipa=equipa, eq_jogos=eq_jogos, eq_jogador=eq_jogador)
+  return render_template('equipa.html', equipa=equipa, eq_jogos=eq_jogos, 
+                         eq_jogador=eq_jogador, eq_gols_feito=eq_gols_feito,
+                         eq_gols_sofrido=eq_gols_sofrido,eq_n_resultados=eq_n_resultados)
 
 # Lista de Grupos e Jogos
 @APP.route('/grupos/')
@@ -250,3 +322,16 @@ def get_jogo(id):
      abort(404, 'O jogo {} não existe.'.format(id))
 
   return render_template('jogo.html', jogo=jogo)
+
+#Search por Jogador
+@APP.route('/jogadores/search/<expr>/')
+def search_jogadores(expr):
+    search = { 'expr': expr }
+    expr = '%' + expr + '%'
+    s_jogador = db.execute(
+        '''
+        SELECT *
+        FROM Jogador
+        WHERE nome_jogador LIKE ?;
+        ''', [expr]).fetchall()
+    return render_template('search-jogador.html', search=search,s_jogador=s_jogador)
