@@ -4,6 +4,8 @@
 
 Projeto de Base de Dados onde utilizei as estatísticas reais da Copa do Mundo FIFA 2022 para criar um website que permite navegar e visualizar de forma simples todos os dados disponíveis.
 
+O projeto foi primariamente desenvolvido em Python e SQL, e utilizei também Templates Jinja para gerar HTMLs utilizando os dados obtidos quando um endpoint faz querries à base de dados.
+
 ### Criação da DB
 
 Foi utilizado um ficheiro csv para o povoamento dos dados, criado a partir da base de dados do “FBref.com” e outras fontes. Após isso foi feito um tratamento dos dados, muitos dos quais continham erros como caracteres representados de forma errada, ou virgulas extras.
